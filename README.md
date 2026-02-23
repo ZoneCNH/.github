@@ -94,6 +94,8 @@ jobs:
 # symlink 到用户级 Claude Code 规则（一次配置，所有项目生效）
 ln -sf ~/org-config/rulesets/rust/RULES.md ~/.claude/rules/rust.md
 ln -sf ~/org-config/rulesets/python/RULES.md ~/.claude/rules/python.md
+ln -sf ~/org-config/rulesets/agent-discipline.md ~/.claude/rules/agent-discipline.md
+ln -sf ~/org-config/rulesets/agent-workflow.md ~/.claude/rules/agent-workflow.md
 ```
 
 详见 [global-rules-distribution.md](docs/global-rules-distribution.md)。
