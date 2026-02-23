@@ -9,12 +9,13 @@
 
 ```
 rulesets/
+├── agent-discipline.md          # Agent 执行纪律（跨语言）
 ├── main-protection.json          # GitHub Ruleset：默认分支保护
 ├── release-tag-protection.json   # GitHub Ruleset：Release Tag 不可变
 │
 ├── rust/                         # Rust 全局规则（10 篇）
 │   ├── RULES.md                  #   核心编码规范（入口）
-│   ├── security.md               #   安全基线（禁 unwrap/unsafe/阻塞）
+│   ├── security.md               #   安全基线
 │   ├── async-runtime.md          #   异步/并发/重试/熔断
 │   ├── testing.md                #   测试策略与 flaky 管理
 │   ├── observability.md          #   日志/指标/追踪
@@ -31,10 +32,11 @@ rulesets/
 
 ## 两类规则
 
-| 类型                | 文件               | 强制力        | 执行方       |
-| ------------------- | ------------------ | ------------- | ------------ |
-| **GitHub Rulesets** | `*.json`           | ⚡ 代码级强制 | GitHub 平台  |
-| **语言规则**        | `rust/`、`python/` | 📄 文件级约定 | Agent / 人类 |
+| 类型                | 文件                  | 强制力        | 执行方       |
+| ------------------- | --------------------- | ------------- | ------------ |
+| **GitHub Rulesets** | `*.json`              | ⚡ 代码级强制 | GitHub 平台  |
+| **Agent 纪律**      | `agent-discipline.md` | 🛡️ 执行级约束 | Agent 自觉   |
+| **语言规则**        | `rust/`、`python/`    | 📄 文件级约定 | Agent / 人类 |
 
 ## 规则来源
 
@@ -56,8 +58,8 @@ Rust 全局规则从以下项目级文档提取通用部分：
 ```bash
 # 一键配置：symlink 到用户级 Claude Code 规则目录
 mkdir -p ~/.claude/rules
-ln -sf ~/org-config/.github/rulesets/rust/RULES.md ~/.claude/rules/rust.md
-ln -sf ~/org-config/.github/rulesets/python/RULES.md ~/.claude/rules/python.md
+ln -sf ~/org-config/rulesets/rust/RULES.md ~/.claude/rules/rust.md
+ln -sf ~/org-config/rulesets/python/RULES.md ~/.claude/rules/python.md
 ```
 
 ## GitHub Rulesets 配置
