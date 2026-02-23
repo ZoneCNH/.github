@@ -4,7 +4,7 @@
 
 - [x] Organization Rulesets 已配置（自动生效，无需操作）
 - [x] `.github` 仓库已包含全局 `CLAUDE.md` 和社区文件
-- [x] 全局规则已配置（`rulesets/rust/` 10 篇 + `rulesets/python/` 2 篇）
+- [x] 全局规则已配置（`rulesets/rust/` 10 篇 + `rulesets/python/` 2 篇 + Agent 规则 4 篇）
 
 ---
 
