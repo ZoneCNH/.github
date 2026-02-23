@@ -22,6 +22,8 @@ ln -sf ~/org-config/rulesets/rust/RULES.md ~/.claude/rules/rust.md
 ln -sf ~/org-config/rulesets/python/RULES.md ~/.claude/rules/python.md
 ln -sf ~/org-config/rulesets/agent-discipline.md ~/.claude/rules/agent-discipline.md
 ln -sf ~/org-config/rulesets/agent-workflow.md ~/.claude/rules/agent-workflow.md
+ln -sf ~/org-config/rulesets/agent-safety.md ~/.claude/rules/agent-safety.md
+ln -sf ~/org-config/rulesets/agent-context.md ~/.claude/rules/agent-context.md
 ```
 
 > 配置一次后，所有新旧仓库自动生效。更新规则只需 `cd ~/org-config && git pull`。

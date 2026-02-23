@@ -27,6 +27,8 @@ bash scripts/setup-global-rules.sh
 ├── rulesets/                          # 📋 全局规则中心
 │   ├── agent-discipline.md            #   Agent 执行纪律（跨语言）
 │   ├── agent-workflow.md              #   Agent 工作流编排（跨语言）
+│   ├── agent-safety.md                #   Agent 安全护栏（跨语言）
+│   ├── agent-context.md               #   Agent 上下文管理（跨语言）
 │   ├── rust/                          #   Rust 编码规范（10 篇 / 859 行）
 │   │   ├── RULES.md                   #     核心规范（入口）
 │   │   ├── security.md                #     安全基线
@@ -96,6 +98,8 @@ ln -sf ~/org-config/rulesets/rust/RULES.md ~/.claude/rules/rust.md
 ln -sf ~/org-config/rulesets/python/RULES.md ~/.claude/rules/python.md
 ln -sf ~/org-config/rulesets/agent-discipline.md ~/.claude/rules/agent-discipline.md
 ln -sf ~/org-config/rulesets/agent-workflow.md ~/.claude/rules/agent-workflow.md
+ln -sf ~/org-config/rulesets/agent-safety.md ~/.claude/rules/agent-safety.md
+ln -sf ~/org-config/rulesets/agent-context.md ~/.claude/rules/agent-context.md
 ```
 
 详见 [global-rules-distribution.md](docs/global-rules-distribution.md)。

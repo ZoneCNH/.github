@@ -67,6 +67,18 @@ if [ -f "${ORG_CONFIG_DIR}/rulesets/agent-workflow.md" ]; then
   echo -e "  ${GREEN}✅ Agent 工作流编排${NC}"
 fi
 
+# Agent 安全护栏
+if [ -f "${ORG_CONFIG_DIR}/rulesets/agent-safety.md" ]; then
+  ln -sf "${ORG_CONFIG_DIR}/rulesets/agent-safety.md" "${CLAUDE_RULES_DIR}/agent-safety.md"
+  echo -e "  ${GREEN}✅ Agent 安全护栏${NC}"
+fi
+
+# Agent 上下文管理
+if [ -f "${ORG_CONFIG_DIR}/rulesets/agent-context.md" ]; then
+  ln -sf "${ORG_CONFIG_DIR}/rulesets/agent-context.md" "${CLAUDE_RULES_DIR}/agent-context.md"
+  echo -e "  ${GREEN}✅ Agent 上下文管理${NC}"
+fi
+
 # 4. 验证
 echo ""
 echo -e "${BLUE}📋 验证结果：${NC}"

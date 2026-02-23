@@ -55,6 +55,8 @@ ln -sf ~/org-config/rulesets/rust/RULES.md ~/.claude/rules/rust.md
 ln -sf ~/org-config/rulesets/python/RULES.md ~/.claude/rules/python.md
 ln -sf ~/org-config/rulesets/agent-discipline.md ~/.claude/rules/agent-discipline.md
 ln -sf ~/org-config/rulesets/agent-workflow.md ~/.claude/rules/agent-workflow.md
+ln -sf ~/org-config/rulesets/agent-safety.md ~/.claude/rules/agent-safety.md
+ln -sf ~/org-config/rulesets/agent-context.md ~/.claude/rules/agent-context.md
 
 # 3. 更新规则时
 cd ~/org-config && git pull
@@ -151,6 +153,14 @@ echo "🔗 已链接 Agent 执行纪律"
 # Agent 工作流编排
 ln -sf "$ORG_CONFIG_DIR/rulesets/agent-workflow.md" "$CLAUDE_RULES_DIR/agent-workflow.md"
 echo "🔗 已链接 Agent 工作流编排"
+
+# Agent 安全护栏
+ln -sf "$ORG_CONFIG_DIR/rulesets/agent-safety.md" "$CLAUDE_RULES_DIR/agent-safety.md"
+echo "🔗 已链接 Agent 安全护栏"
+
+# Agent 上下文管理
+ln -sf "$ORG_CONFIG_DIR/rulesets/agent-context.md" "$CLAUDE_RULES_DIR/agent-context.md"
+echo "🔗 已链接 Agent 上下文管理"
 
 echo "✅ 全局规则配置完成！"
 echo "📂 规则目录：$CLAUDE_RULES_DIR"
