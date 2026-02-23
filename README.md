@@ -25,6 +25,7 @@ bash scripts/setup-global-rules.sh
 ├── SECURITY.md                        # 安全策略（自动继承）
 │
 ├── rulesets/                          # 📋 全局规则中心
+│   ├── agent-discipline.md            #   Agent 执行纪律（跨语言）
 │   ├── rust/                          #   Rust 编码规范（10 篇 / 859 行）
 │   │   ├── RULES.md                   #     核心规范（入口）
 │   │   ├── security.md                #     安全基线
@@ -80,8 +81,8 @@ bash scripts/setup-global-rules.sh
 name: CI
 on: { push: { branches: [main] }, pull_request: { branches: [main] } }
 jobs:
-    ci:
-        uses: ZoneCNH/.github/.github/workflows/reusable-rust-ci.yml@main
+  ci:
+    uses: ZoneCNH/.github/.github/workflows/reusable-rust-ci.yml@main
 ```
 
 **Python / Node.js** 类似，替换 workflow 名称即可。
