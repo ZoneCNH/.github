@@ -20,6 +20,8 @@ git clone git@github.com:ZoneCNH/.github.git ~/org-config
 mkdir -p ~/.claude/rules
 ln -sf ~/org-config/rulesets/rust/RULES.md ~/.claude/rules/rust.md
 ln -sf ~/org-config/rulesets/python/RULES.md ~/.claude/rules/python.md
+ln -sf ~/org-config/rulesets/agent-discipline.md ~/.claude/rules/agent-discipline.md
+ln -sf ~/org-config/rulesets/agent-workflow.md ~/.claude/rules/agent-workflow.md
 ```
 
 > 配置一次后，所有新旧仓库自动生效。更新规则只需 `cd ~/org-config && git pull`。
@@ -46,13 +48,13 @@ cd <repo-name>
 # .github/workflows/ci.yml
 name: CI
 on:
-    push:
-        branches: [main]
-    pull_request:
-        branches: [main]
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 jobs:
-    ci:
-        uses: ZoneCNH/.github/.github/workflows/reusable-rust-ci.yml@main
+  ci:
+    uses: ZoneCNH/.github/.github/workflows/reusable-rust-ci.yml@main
 ```
 
 ### Python 项目
@@ -61,13 +63,13 @@ jobs:
 # .github/workflows/ci.yml
 name: CI
 on:
-    push:
-        branches: [main]
-    pull_request:
-        branches: [main]
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 jobs:
-    ci:
-        uses: ZoneCNH/.github/.github/workflows/reusable-python-ci.yml@main
+  ci:
+    uses: ZoneCNH/.github/.github/workflows/reusable-python-ci.yml@main
 ```
 
 ### Node.js 项目
@@ -76,13 +78,13 @@ jobs:
 # .github/workflows/ci.yml
 name: CI
 on:
-    push:
-        branches: [main]
-    pull_request:
-        branches: [main]
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 jobs:
-    ci:
-        uses: ZoneCNH/.github/.github/workflows/reusable-node-ci.yml@main
+  ci:
+    uses: ZoneCNH/.github/.github/workflows/reusable-node-ci.yml@main
 ```
 
 ## Step 3：添加项目级 Agent 配置（可选）

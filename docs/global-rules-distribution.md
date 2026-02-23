@@ -53,6 +53,8 @@ git clone git@github.com:ZoneCNH/.github.git ~/org-config
 mkdir -p ~/.claude/rules
 ln -sf ~/org-config/rulesets/rust/RULES.md ~/.claude/rules/rust.md
 ln -sf ~/org-config/rulesets/python/RULES.md ~/.claude/rules/python.md
+ln -sf ~/org-config/rulesets/agent-discipline.md ~/.claude/rules/agent-discipline.md
+ln -sf ~/org-config/rulesets/agent-workflow.md ~/.claude/rules/agent-workflow.md
 
 # 3. 更新规则时
 cd ~/org-config && git pull
@@ -81,25 +83,25 @@ git submodule add git@github.com:ZoneCNH/.github.git .shared-rules
 # .github/.github/workflows/sync-rules.yml
 name: Sync Rules to All Repos
 on:
-    push:
-        paths: ["rulesets/**"]
+  push:
+    paths: ["rulesets/**"]
 jobs:
-    sync:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4
-            - name: Sync to all repos
-              run: |
-                  REPOS=$(gh repo list ZoneCNH --json name -q '.[].name')
-                  for REPO in $REPOS; do
-                    gh api repos/ZoneCNH/$REPO/contents/.claude/rules/rust.md \
-                      --method PUT \
-                      -f message="sync: 更新全局 Rust 规则" \
-                      -f content=$(base64 -w 0 rulesets/rust/RULES.md) \
-                      2>/dev/null || true
-                  done
-              env:
-                  GH_TOKEN: ${{ secrets.ORG_TOKEN }}
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Sync to all repos
+        run: |
+          REPOS=$(gh repo list ZoneCNH --json name -q '.[].name')
+          for REPO in $REPOS; do
+            gh api repos/ZoneCNH/$REPO/contents/.claude/rules/rust.md \
+              --method PUT \
+              -f message="sync: 更新全局 Rust 规则" \
+              -f content=$(base64 -w 0 rulesets/rust/RULES.md) \
+              2>/dev/null || true
+          done
+        env:
+          GH_TOKEN: ${{ secrets.ORG_TOKEN }}
 ```
 
 ## 推荐方案
@@ -141,6 +143,14 @@ echo "🔗 已链接 Rust 规则"
 # Python 规则
 ln -sf "$ORG_CONFIG_DIR/rulesets/python/RULES.md" "$CLAUDE_RULES_DIR/python.md"
 echo "🔗 已链接 Python 规则"
+
+# Agent 执行纪律
+ln -sf "$ORG_CONFIG_DIR/rulesets/agent-discipline.md" "$CLAUDE_RULES_DIR/agent-discipline.md"
+echo "🔗 已链接 Agent 执行纪律"
+
+# Agent 工作流编排
+ln -sf "$ORG_CONFIG_DIR/rulesets/agent-workflow.md" "$CLAUDE_RULES_DIR/agent-workflow.md"
+echo "🔗 已链接 Agent 工作流编排"
 
 echo "✅ 全局规则配置完成！"
 echo "📂 规则目录：$CLAUDE_RULES_DIR"
