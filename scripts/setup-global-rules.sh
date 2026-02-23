@@ -55,6 +55,18 @@ if [ -f "${ORG_CONFIG_DIR}/rulesets/python/RULES.md" ]; then
   echo -e "  ${GREEN}✅ Python 规则${NC}"
 fi
 
+# Agent 执行纪律
+if [ -f "${ORG_CONFIG_DIR}/rulesets/agent-discipline.md" ]; then
+  ln -sf "${ORG_CONFIG_DIR}/rulesets/agent-discipline.md" "${CLAUDE_RULES_DIR}/agent-discipline.md"
+  echo -e "  ${GREEN}✅ Agent 执行纪律${NC}"
+fi
+
+# Agent 工作流编排
+if [ -f "${ORG_CONFIG_DIR}/rulesets/agent-workflow.md" ]; then
+  ln -sf "${ORG_CONFIG_DIR}/rulesets/agent-workflow.md" "${CLAUDE_RULES_DIR}/agent-workflow.md"
+  echo -e "  ${GREEN}✅ Agent 工作流编排${NC}"
+fi
+
 # 4. 验证
 echo ""
 echo -e "${BLUE}📋 验证结果：${NC}"

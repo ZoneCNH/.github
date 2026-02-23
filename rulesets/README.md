@@ -62,6 +62,8 @@ Rust 全局规则从以下项目级文档提取通用部分：
 mkdir -p ~/.claude/rules
 ln -sf ~/org-config/rulesets/rust/RULES.md ~/.claude/rules/rust.md
 ln -sf ~/org-config/rulesets/python/RULES.md ~/.claude/rules/python.md
+ln -sf ~/org-config/rulesets/agent-discipline.md ~/.claude/rules/agent-discipline.md
+ln -sf ~/org-config/rulesets/agent-workflow.md ~/.claude/rules/agent-workflow.md
 ```
 
 ## GitHub Rulesets 配置
