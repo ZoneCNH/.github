@@ -10,6 +10,7 @@
 ```
 rulesets/
 ├── agent-discipline.md          # Agent 执行纪律（跨语言）
+├── agent-workflow.md            # Agent 工作流编排（跨语言）
 ├── main-protection.json          # GitHub Ruleset：默认分支保护
 ├── release-tag-protection.json   # GitHub Ruleset：Release Tag 不可变
 │
@@ -36,6 +37,7 @@ rulesets/
 | ------------------- | --------------------- | ------------- | ------------ |
 | **GitHub Rulesets** | `*.json`              | ⚡ 代码级强制 | GitHub 平台  |
 | **Agent 纪律**      | `agent-discipline.md` | 🛡️ 执行级约束 | Agent 自觉   |
+| **Agent 工作流**    | `agent-workflow.md`   | 🛡️ 流程级约束 | Agent 自觉   |
 | **语言规则**        | `rust/`、`python/`    | 📄 文件级约定 | Agent / 人类 |
 
 ## 规则来源
