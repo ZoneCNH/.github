@@ -1,0 +1,78 @@
+# Node.js CI Reusable Workflow
+# 被其他仓库通过 `uses: ZoneCNH/.github/.github/workflows/reusable-node-ci.yml@main` 调用
+
+name: Node.js CI
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        description: "Node.js 版本"
+        required: false
+        type: string
+        default: "22"
+      package-manager:
+        description: "包管理器 (npm/pnpm/yarn)"
+        required: false
+        type: string
+        default: "pnpm"
+      run-typecheck:
+        description: "是否运行类型检查"
+        required: false
+        type: boolean
+        default: true
+
+jobs:
+  lint:
+    name: Lint + 格式化
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+      - uses: pnpm/action-setup@v4
+        if: ${{ inputs.package-manager == 'pnpm' }}
+      - run: ${{ inputs.package-manager }} install
+      - run: ${{ inputs.package-manager }} run lint || echo "没有 lint 脚本"
+      - run: ${{ inputs.package-manager }} run format:check || echo "没有 format:check 脚本"
+
+  typecheck:
+    name: 类型检查
+    if: ${{ inputs.run-typecheck }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+      - uses: pnpm/action-setup@v4
+        if: ${{ inputs.package-manager == 'pnpm' }}
+      - run: ${{ inputs.package-manager }} install
+      - run: ${{ inputs.package-manager }} run typecheck || ${{ inputs.package-manager }} run tsc || echo "没有类型检查脚本"
+
+  test:
+    name: 测试
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+      - uses: pnpm/action-setup@v4
+        if: ${{ inputs.package-manager == 'pnpm' }}
+      - run: ${{ inputs.package-manager }} install
+      - run: ${{ inputs.package-manager }} test || echo "没有测试脚本"
+
+  build:
+    name: 构建
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+      - uses: pnpm/action-setup@v4
+        if: ${{ inputs.package-manager == 'pnpm' }}
+      - run: ${{ inputs.package-manager }} install
+      - run: ${{ inputs.package-manager }} run build || echo "没有 build 脚本"

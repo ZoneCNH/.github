@@ -1,0 +1,81 @@
+# Rust CI Reusable Workflow
+# 被其他仓库通过 `uses: ZoneCNH/.github/.github/workflows/reusable-rust-ci.yml@main` 调用
+#
+# 质量门禁标准见 rulesets/rust/ci.md
+
+name: Rust CI
+
+on:
+  workflow_call:
+    inputs:
+      rust-version:
+        description: "Rust 工具链版本"
+        required: false
+        type: string
+        default: "stable"
+      cargo-test-args:
+        description: "cargo test 额外参数"
+        required: false
+        type: string
+        default: "--all-features"
+      run-audit:
+        description: "是否运行 cargo deny check"
+        required: false
+        type: boolean
+        default: true
+
+jobs:
+  fmt:
+    name: 格式化检查
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ inputs.rust-version }}
+          components: rustfmt
+      - run: cargo fmt --all -- --check
+
+  clippy:
+    name: 静态分析
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ inputs.rust-version }}
+          components: clippy
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo clippy --all-targets --all-features -- -D warnings
+
+  test:
+    name: 测试
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ inputs.rust-version }}
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo test ${{ inputs.cargo-test-args }}
+
+  doc:
+    name: 文档编译
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ inputs.rust-version }}
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo doc --no-deps --all-features
+        env:
+          RUSTDOCFLAGS: "-D warnings"
+
+  deny:
+    name: 依赖安全审计
+    if: ${{ inputs.run-audit }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: EmbarkStudios/cargo-deny-action@v2

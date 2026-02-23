@@ -1,0 +1,77 @@
+# Organization Rulesets — 跨项目全局规则
+
+> 本目录是**所有语言、所有项目**的全局规则中心。
+> 包含 GitHub Rulesets 配置（代码级强制）和语言级编码规范（文件级约定）。
+
+---
+
+## 目录结构
+
+```
+rulesets/
+├── main-protection.json          # GitHub Ruleset：默认分支保护
+├── release-tag-protection.json   # GitHub Ruleset：Release Tag 不可变
+│
+├── rust/                         # Rust 全局规则（10 篇）
+│   ├── RULES.md                  #   核心编码规范（入口）
+│   ├── security.md               #   安全基线（禁 unwrap/unsafe/阻塞）
+│   ├── async-runtime.md          #   异步/并发/重试/熔断
+│   ├── testing.md                #   测试策略与 flaky 管理
+│   ├── observability.md          #   日志/指标/追踪
+│   ├── api-design.md             #   API 设计/错误类型/配置
+│   ├── release.md                #   SemVer/Feature Flag/Changelog
+│   ├── clippy.md                 #   Clippy lint 分级配置
+│   ├── ci.md                     #   CI/CD 质量门禁标准
+│   └── cheatsheet.md             #   一页速查卡
+│
+└── python/                       # Python 全局规则（2 篇）
+    ├── RULES.md                  #   编码规范
+    └── ci.md                     #   CI/CD 质量门禁 + Ruff 配置
+```
+
+## 两类规则
+
+| 类型                | 文件               | 强制力        | 执行方       |
+| ------------------- | ------------------ | ------------- | ------------ |
+| **GitHub Rulesets** | `*.json`           | ⚡ 代码级强制 | GitHub 平台  |
+| **语言规则**        | `rust/`、`python/` | 📄 文件级约定 | Agent / 人类 |
+
+## 规则来源
+
+Rust 全局规则从以下项目级文档提取通用部分：
+
+| 全局规则           | 来源                                                     |
+| ------------------ | -------------------------------------------------------- |
+| `security.md`      | `rules/security.md` + `SECURITY_POLICY.md`               |
+| `async-runtime.md` | `RUNTIME_POLICY.md`                                      |
+| `testing.md`       | `TESTING_POLICY.md`                                      |
+| `observability.md` | `OBSERVABILITY_POLICY.md`                                |
+| `api-design.md`    | `API_POLICY.md` + `ERROR_POLICY.md` + `CONFIG_POLICY.md` |
+| `release.md`       | `RELEASE_POLICY.md`                                      |
+| `RULES.md`         | 综合提取                                                 |
+| `cheatsheet.md`    | `cheatsheet.md`（去除项目特定内容）                      |
+
+## 分发到开发环境
+
+```bash
+# 一键配置：symlink 到用户级 Claude Code 规则目录
+mkdir -p ~/.claude/rules
+ln -sf ~/org-config/.github/rulesets/rust/RULES.md ~/.claude/rules/rust.md
+ln -sf ~/org-config/.github/rulesets/python/RULES.md ~/.claude/rules/python.md
+```
+
+## GitHub Rulesets 配置
+
+通过 GitHub UI 或 REST API 配置，JSON 文件为 IaC 备份：
+
+```bash
+# 创建
+curl -X POST \
+  -H "Authorization: Bearer $GITHUB_TOKEN" \
+  https://api.github.com/orgs/{org}/rulesets \
+  -d @main-protection.json
+
+# 导出
+curl -H "Authorization: Bearer $GITHUB_TOKEN" \
+  https://api.github.com/orgs/{org}/rulesets | jq '.' > exported.json
+```

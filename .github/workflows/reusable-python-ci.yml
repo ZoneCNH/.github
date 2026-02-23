@@ -1,0 +1,64 @@
+# Python CI Reusable Workflow
+# 被其他仓库通过 `uses: ZoneCNH/.github/.github/workflows/reusable-python-ci.yml@main` 调用
+#
+# 质量门禁标准见 rulesets/python/ci.md
+
+name: Python CI
+
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        description: "Python 版本"
+        required: false
+        type: string
+        default: "3.12"
+      python-version-matrix:
+        description: "多版本测试矩阵（JSON 数组）"
+        required: false
+        type: string
+        default: '["3.11", "3.12"]'
+      run-mypy:
+        description: "是否运行 mypy 类型检查"
+        required: false
+        type: boolean
+        default: true
+
+jobs:
+  lint:
+    name: Lint + 格式化
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ inputs.python-version }}
+      - run: pip install ruff
+      - run: ruff check .
+      - run: ruff format --check .
+
+  typecheck:
+    name: 类型检查
+    if: ${{ inputs.run-mypy }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ inputs.python-version }}
+      - run: pip install -e ".[dev]" 2>/dev/null || pip install mypy
+      - run: mypy src/ || mypy .
+
+  test:
+    name: 测试
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ${{ fromJson(inputs.python-version-matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install -e ".[dev]" 2>/dev/null || pip install pytest pytest-cov
+      - run: pytest --cov=src/ -v || pytest -v
