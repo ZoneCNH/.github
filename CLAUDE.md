@@ -43,6 +43,13 @@
 - **文件即状态** — 关键信息持久化到文件
 - **双阶段审查** — 需求合规 → 代码质量
 
+模型路由见 [agent-model-routing.md](./rulesets/agent-model-routing.md)：
+
+- **编码 → Codex CLI** — Implement/Refactor/Fix 必须由 Codex 执行，Claude Code 不得直接提交生产代码
+- **设计 → Claude Code** — 架构/规划/推理由 Claude Code 主导，Codex 不得私自变更需求或架构
+- **Agent Teams 路由** — 编码类 teammate 必须通过 `ask_codex` 委派，Team Lead 只做规划和验证
+- **降级兜底** — Codex 失败 → 重试 1 次 → 回退 Claude Code（标注 `[FALLBACK]`）
+
 ## Rust 项目
 
 参考以下全局规则（按优先级排序）：

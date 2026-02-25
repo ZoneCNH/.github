@@ -13,6 +13,7 @@ rulesets/
 ├── agent-workflow.md            # Agent 工作流编排（跨语言）
 ├── agent-safety.md              # Agent 安全护栏（跨语言）
 ├── agent-context.md             # Agent 上下文管理（跨语言）
+├── agent-model-routing.md       # Agent 模型路由（Claude/Codex 分工，P0 强制）
 ├── main-protection.json          # GitHub Ruleset：默认分支保护
 ├── release-tag-protection.json   # GitHub Ruleset：Release Tag 不可变
 │
@@ -28,9 +29,15 @@ rulesets/
 │   ├── ci.md                     #   CI/CD 质量门禁标准
 │   └── cheatsheet.md             #   一页速查卡
 │
-└── python/                       # Python 全局规则（2 篇）
-    ├── RULES.md                  #   编码规范
-    └── ci.md                     #   CI/CD 质量门禁 + Ruff 配置
+└── python/                       # Python 全局规则（8 篇）
+    ├── RULES.md                  #   核心编码规范（入口）
+    ├── security.md               #   安全基线 + 供应链安全
+    ├── testing.md                #   测试策略与覆盖率
+    ├── observability.md          #   日志/可观测性/链路追踪
+    ├── config.md                 #   配置/密钥管理/错误处理
+    ├── release.md                #   SemVer/Changelog/发布
+    ├── ci.md                     #   CI/CD 质量门禁 + Ruff 配置
+    └── cheatsheet.md             #   工具栈一页速查卡
 ```
 
 ## 两类规则
@@ -42,6 +49,7 @@ rulesets/
 | **Agent 工作流**    | `agent-workflow.md`   | 🛡️ 流程级约束 | Agent 自觉   |
 | **Agent 安全**      | `agent-safety.md`     | 🛡️ 防御级约束 | Agent 自觉   |
 | **Agent 上下文**    | `agent-context.md`    | 🛡️ 认知级约束 | Agent 自觉   |
+| **Agent 模型路由**  | `agent-model-routing.md` | 🔥 P0 强制  | Agent 自觉   |
 | **语言规则**        | `rust/`、`python/`    | 📄 文件级约定 | Agent / 人类 |
 
 ## 规则来源
