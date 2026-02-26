@@ -6,12 +6,17 @@
 
 ---
 
-## 1. 双引擎分工（P0 铁律）
+## 1. 全场景路由表（P0 铁律）
 
-| 任务类别                           | 执行引擎                                  | 禁止事项                                   |
-| ---------------------------------- | ----------------------------------------- | ------------------------------------------ |
-| 编码（Implement / Refactor / Fix） | **Codex CLI**（GPT-5.3 High）             | Claude Code **不得**直接提交生产代码       |
-| 设计 / 推理 / 架构 / 计划         | **Claude Code**（Opus 4.6）主导 + Codex 协作审查 | Codex **不得**私自变更需求或架构           |
+| 任务类型 | 强制工具 | 禁止事项 |
+|----------|---------|---------|
+| 编码（Implement / Refactor / Fix） | **Codex CLI**（GPT-5.3 High） | Claude Code **不得**直接提交生产代码 |
+| 设计 / 推理 / 架构 / 计划 | **Claude Code**（Opus 4.6）主导 + Codex 协作审查 | Codex **不得**私自变更需求或架构 |
+| 批量执行（格式化 / lint / 简单实现） | **Claude Code**（Opus 4.6） | 不得用于架构设计或安全变更 |
+| CI 执行 / 门禁检查 | **CI Runner** | 人工不得跳过自动检查 |
+| 最终审批（L2/L3） | **Human Reviewer** | Agent **不得**自行批准 L2/L3 |
+| 进化反思（Observe / Reflect） | **Claude Code**（Opus 4.6） | **不得**在反思阶段修改代码 |
+| 进化纠错（Correct） | **Codex CLI**（GPT-5.3 High） | **必须**附带回归测试 |
 
 ### 1.1 Claude Code 强制处理的任务
 
@@ -24,6 +29,8 @@
 - 需求文档（`requirements_doc`）
 - 跨域分析与评估（`cross_domain_analysis`）
 - 战略性规划（`strategy_planning`）
+- 进化反思（`observe` / `reflect`）— 禁止在反思阶段修改代码
+- 批量格式化 / lint（`batch_fmt` / `batch_lint`）— 简单执行，无需 Codex
 
 ### 1.2 Codex CLI 强制处理的任务
 
@@ -36,6 +43,14 @@
 - Bug 修复（`bug_fix`）
 - 单元测试生成（`test_generation`）
 - 批量重构（`batch_refactor`）
+- 进化纠错（`correct`）— 必须附带回归测试
+
+### 1.3 非 Agent 强制处理的任务
+
+以下任务**禁止** Agent 自行完成：
+
+- CI 门禁检查 — 必须由 CI Runner 执行，Agent 不得跳过或模拟
+- L2/L3 审批 — 必须由 Human Reviewer 批准，Agent 不得自行审批
 
 ---
 
@@ -100,6 +115,26 @@ Codex CLI 执行
     │
     ├─ 需要设计/规划/推理？
     │   ├─ 是 → Claude Code（直接执行）
+    │   └─ 否 → 下一判断
+    │
+    ├─ 批量执行（fmt / lint / 简单实现）？
+    │   ├─ 是 → Claude Code（直接执行，不委派 Codex）
+    │   └─ 否 → 下一判断
+    │
+    ├─ CI 门禁 / 自动检查？
+    │   ├─ 是 → CI Runner（Agent 不得跳过）
+    │   └─ 否 → 下一判断
+    │
+    ├─ L2/L3 审批？
+    │   ├─ 是 → Human Reviewer（Agent 不得自行批准）
+    │   └─ 否 → 下一判断
+    │
+    ├─ 进化反思（Observe / Reflect）？
+    │   ├─ 是 → Claude Code（只读分析，禁止改代码）
+    │   └─ 否 → 下一判断
+    │
+    ├─ 进化纠错（Correct）？
+    │   ├─ 是 → Codex CLI（必须附带回归测试）
     │   └─ 否 → 下一判断
     │
     └─ 其他 → Claude Code（默认）

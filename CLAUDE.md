@@ -47,8 +47,29 @@
 
 - **编码 → Codex CLI** — Implement/Refactor/Fix 必须由 Codex 执行，Claude Code 不得直接提交生产代码
 - **设计 → Claude Code** — 架构/规划/推理由 Claude Code 主导，Codex 不得私自变更需求或架构
+- **批量执行 → Claude Code** — fmt/lint/简单实现直接执行，不委派 Codex
+- **CI/审批 → 非 Agent** — CI 门禁由 Runner 执行，L2/L3 审批由 Human 批准，Agent 不得跳过或自批
+- **进化反思 → Claude Code** — Observe/Reflect 阶段只读分析，禁止修改代码
+- **进化纠错 → Codex CLI** — Correct 阶段必须附带回归测试
 - **Agent Teams 路由** — 编码类 teammate 必须通过 `ask_codex` 委派，Team Lead 只做规划和验证
 - **降级兜底** — Codex 失败 → 重试 1 次 → 回退 Claude Code（标注 `[FALLBACK]`）
+
+Codex 效率最大化见 [agent-codex.md](./rulesets/agent-codex.md)：
+
+- **职责分工** — 主 Agent 只做规划+验证，Codex 只做编码+审查，边界不可模糊
+- **Prompt 工程** — 单任务 ≤ 500 字，只传相关文件上下文，明确输出格式，中文注释约束写入 prompt
+- **三阶段流水线** — 每个工作单元必须经过 exec→review→verify，review 和 verify 可并行
+- **并行调度** — 最大 10 并发，DAG 拓扑排序，Review 按模块拆分，互斥资源加排他锁
+- **证据强制** — 每份输出必须附带路径+符号+命令+结果，缺失证据退回重做
+- **角色化调用** — `ask_codex` 必须指定 `agent_role`（architect/code-reviewer/security-reviewer 等）
+
+Agent Teams 效率最大化见 [agent-teams.md](./rulesets/agent-teams.md)：
+
+- **波次调度** — 按依赖图分波执行，每波 ≤ 5 agent，波次间必须跑质量门禁（fmt + clippy + test）
+- **文件隔离** — Crate 级独占写权限，一个文件只能有一个 owner，共享文件（Cargo.toml）由 Lead 串行处理
+- **Agent 分组** — 按改动域聚合（同 crate 任务归同一 agent），文件零重叠 > 语义相关 > 工作量均衡
+- **Lead 只协调** — Team Lead 只做依赖分析、波次划分、文件分配、质量门禁，不做实现
+- **spawn 模板** — 每个 teammate prompt 必须包含：任务描述 + 文件所有权清单 + 验收标准 + crate 级质量命令
 
 ## Rust 项目
 

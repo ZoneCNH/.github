@@ -14,6 +14,8 @@ rulesets/
 ├── agent-safety.md              # Agent 安全护栏（跨语言）
 ├── agent-context.md             # Agent 上下文管理（跨语言）
 ├── agent-model-routing.md       # Agent 模型路由（Claude/Codex 分工，P0 强制）
+├── agent-codex.md               # Agent Codex 效率最大化（Prompt 工程/三阶段流水线/并行调度，P0 强制）
+├── agent-teams.md               # Agent Teams 效率最大化（波次调度/文件隔离/并行纪律，P0 强制）
 ├── main-protection.json          # GitHub Ruleset：默认分支保护
 ├── release-tag-protection.json   # GitHub Ruleset：Release Tag 不可变
 │
@@ -50,6 +52,8 @@ rulesets/
 | **Agent 安全**      | `agent-safety.md`     | 🛡️ 防御级约束 | Agent 自觉   |
 | **Agent 上下文**    | `agent-context.md`    | 🛡️ 认知级约束 | Agent 自觉   |
 | **Agent 模型路由**  | `agent-model-routing.md` | 🔥 P0 强制  | Agent 自觉   |
+| **Agent Codex**     | `agent-codex.md`         | 🔥 P0 强制  | Agent 自觉   |
+| **Agent Teams**     | `agent-teams.md`         | 🔥 P0 强制  | Agent 自觉   |
 | **语言规则**        | `rust/`、`python/`    | 📄 文件级约定 | Agent / 人类 |
 
 ## 规则来源
@@ -78,6 +82,8 @@ ln -sf ~/org-config/rulesets/agent-discipline.md ~/.claude/rules/agent-disciplin
 ln -sf ~/org-config/rulesets/agent-workflow.md ~/.claude/rules/agent-workflow.md
 ln -sf ~/org-config/rulesets/agent-safety.md ~/.claude/rules/agent-safety.md
 ln -sf ~/org-config/rulesets/agent-context.md ~/.claude/rules/agent-context.md
+ln -sf ~/org-config/rulesets/agent-teams.md ~/.claude/rules/agent-teams.md
+ln -sf ~/org-config/rulesets/agent-codex.md ~/.claude/rules/agent-codex.md
 ```
 
 ## GitHub Rulesets 配置
