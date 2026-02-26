@@ -288,7 +288,71 @@ Codex CLI 执行
 
 ---
 
-## 9. 效率度量（P2）
+## 9. 双审协议（P0）
+
+当变更涉及 ≥2 个文件或风险 ≥ P1 时，**必须**执行双审（Claude + Codex 独立审查）。
+
+### 9.1 双审流程
+
+```
+exec 完成
+    ├──► Claude 审查（review-claude.md）
+    └──► Codex 审查（review-codex.md）
+              ↓ 两份齐全
+         review-summary.md（综合结论）
+              ↓ 若冲突
+         decision.md（仲裁记录）
+```
+
+- 两份 Review **必须独立生成**，禁止互相抄结论
+- 单审（仅 Codex review）仅允许用于：单文件变更 + 风险 P2 + 无架构影响
+
+### 9.2 单份 Review 结构要求
+
+每份 review 必须包含：
+
+| 字段 | 必填 | 说明 |
+|------|------|------|
+| Verdict | ✅ | 三选一：`Approve` / `Request changes` / `Block` |
+| Blocking Issues | 条件 | Request changes / Block 时 ≥ 1 条 |
+| Evidence | ✅ | ≥ 1 条（file:line、diff、命令输出摘要） |
+| Risk | ✅ | P0 / P1 / P2 + 缓解建议 |
+
+### 9.3 review-summary 要求
+
+`review-summary.md` 必须包含：
+
+- 最终结论：`Pass` / `Changes Required` / `Blocked`
+- 阻塞项 owner（至少一个角色名或 @handle）
+- 若两份 review 结论冲突：**必须**引用 `decision.md`
+
+### 9.4 冲突检测与仲裁
+
+**冲突定义**：一方 Approve，另一方 Request changes 或 Block。
+
+冲突触发时**必须**：
+
+1. 生成 `decision.md`，包含：
+   - 背景与问题
+   - 备选方案（≥ 2）
+   - 双方证据引用
+   - 最终决策与理由
+   - 回滚方案
+2. 更新 `review-summary.md` 引用 `decision.md`
+3. 若风险 ≥ P0：**必须**人工确认（Human-in-the-loop）
+
+### 9.5 仲裁触发条件（完整清单）
+
+满足任一即触发仲裁：
+
+- 双审结论冲突（Approve vs Request changes/Block）
+- Spec 变更导致验收标准变化
+- 风险等级 ≥ P1（安全、资金、不可逆）
+- 依赖升级/协议变化缺乏验证证据
+
+---
+
+## 10. 效率度量（P2）
 
 | 指标 | 计算方式 | 目标 |
 |------|---------|------|

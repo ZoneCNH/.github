@@ -142,6 +142,55 @@ Codex CLI 执行
 
 ---
 
-## 5. 项目级扩展
+## 5. RACI 矩阵（P0）
+
+明确每个阶段的责任归属，防止越权或责任真空。
+
+### 5.1 角色定义
+
+| 角色 | 身份 | 核心职责 |
+|------|------|---------|
+| Claude（Planner/Architect） | 主 Agent | Spec 质量、架构决策、独立 Review |
+| Codex（Implementer） | Codex CLI | 代码实现、独立 Review、修复 CI |
+| Verifier（QA/Runner） | 主 Agent 或 CI | 可复现验证、验收标准逐条对齐 |
+| Arbiter（Judge） | 主 Agent | 冲突仲裁、decision.md 输出 |
+| Human（Owner） | 用户 | P0 高风险确认、最终业务决策 |
+
+### 5.2 阶段 × 角色矩阵
+
+> R = Responsible（执行）、A = Accountable（负责）、C = Consulted（咨询）、I = Informed（知会）
+
+| 阶段 | Claude | Codex | Verifier | Arbiter | Human |
+|------|--------|-------|----------|---------|-------|
+| Plan（规划） | **A/R** | C | I | I | C |
+| Implement（编码） | C | **R** | I | I | I |
+| Review（审查） | **R** | **R** | I | 条件触发 | I |
+| Verify（验证） | C | I | **A/R** | I | I |
+| Merge（合并） | **A** | I | C | 条件触发 | 条件触发 |
+| Reflect（复盘） | **A/R** | C | C | I | I |
+| Learn（改进） | **A/R** | I | I | I | C |
+
+### 5.3 权限边界（不可越界）
+
+| 角色 | 禁止事项 |
+|------|---------|
+| Claude | 未通过 Plan Gate 前不得指示合并；不得绕过高风险人工确认 |
+| Codex | 不得擅自修改规则文件以"通过门禁"；不得引入未声明依赖 |
+| Verifier | 不得用"我本地跑过"替代可复现命令与证据 |
+| Arbiter | 不得在缺乏证据时强行裁决；不得替代 Human 做 P0 确认 |
+| Human | 无限制（最终决策权） |
+
+### 5.4 冲突升级路径
+
+```
+角色间分歧
+    ├─ Review 结论冲突 → Arbiter 仲裁 → decision.md
+    ├─ 风险 ≥ P1 → Arbiter 仲裁 → decision.md
+    └─ 风险 = P0 → Arbiter 仲裁 → Human 确认 → decision.md
+```
+
+---
+
+## 6. 项目级扩展
 
 各项目可在 `.agent/rules/global/model-routing.md` 中继承本规则并添加项目特有细化（如 Codex 并发槽位、crate 粒度路由），但**不得**违反 §1 和 §2 的强制约束。
